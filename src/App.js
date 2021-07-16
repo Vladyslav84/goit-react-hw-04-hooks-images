@@ -10,7 +10,7 @@ import s from './App.module.css';
 import { fetchCountries } from './Components/Api/api'
 
 function App() {
-  
+
 
   const [imgGallery, setImgGallery] = useState([]);
   const [imgName, setImgName] = useState('');
@@ -18,45 +18,49 @@ function App() {
   const [selectedObg, setSelectedObg] = useState(null);
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState(null);
-  
- 
+
+
   // console.log(imgGallery.length);
   //           if (imgGallery.length === 0 && status === 'resolved') {
   //     // alert(`Sorry, we did not find such pictures ${imgName}`)
   //     // setStatus('idle')
   //             console.log('eeeeeeeeeeee')
-              
+
   //   };
 
   useEffect(() => {
-    if (status === 'pending'){
-      try {
+    if (status === 'pending')
+    {
+      try
+      {
         const getImg = async () => {
-           const response = await fetchCountries(imgName, pageNum);
+          const response = await fetchCountries(imgName, pageNum);
 
-          if (response.length === 0) {
-              setStatus('reject')
-              alert(`Sorry, we did not find such pictures ${imgName}`)
-              
-          } else {
+          if (response.length === 0)
+          {
+            setStatus('reject')
+            alert(`Sorry, we did not find such pictures ${ imgName }`)
+
+          } else
+          {
             setStatus('resolved')
           };
-            return response;
+          return response;
         }
         getImg()
-        .then(NewImgGallery =>
-        setImgGallery(prevState => 
-          [...prevState, ...NewImgGallery])
-        )
+          .then(NewImgGallery =>
+            setImgGallery(prevState =>
+              [...prevState, ...NewImgGallery])
+          )
       } catch {
         alert(`Pixabay is dead`)
         setStatus('error');
         setError('error')
-      } 
+      }
     }
-   
-   }, [pageNum, imgName]);
-  
+
+  }, [pageNum, imgName]);
+
   useEffect(() => {
     window.scrollTo({
       top: document.documentElement.scrollHeight,
@@ -64,7 +68,7 @@ function App() {
     });
   })
 
-  function searchBarInputValueHandler  (InputValue)  {
+  function searchBarInputValueHandler(InputValue) {
     if (InputValue.trim() !== '')
     {
       setImgName(InputValue);
@@ -73,8 +77,8 @@ function App() {
     }
     if (imgName !== InputValue)
     {
-        setImgGallery([]);
-        setPageNum(1);
+      setImgGallery([]);
+      setPageNum(1);
     }
   };
 
@@ -85,46 +89,47 @@ function App() {
 
   function handleSelectObg(obg) {
     setSelectedObg(obg);
+    setStatus("resolved")
   }
 
   function toggleMdl(evt) {
     setSelectedObg(null);
 
   };
-    return (
-      <Container>
-        <SearchBar onSubmit={searchBarInputValueHandler} />
-        <ImageGallery
-          imgArr={imgGallery}
-          onSelect={handleSelectObg}
-        >
-        </ImageGallery>
-        {status === 'resolved' && <Button onLoadMore={loadMoreBtnHandler}/>}
+  return (
+    <Container>
+      <SearchBar onSubmit={searchBarInputValueHandler} />
+      <ImageGallery
+        imgArr={imgGallery}
+        onSelect={handleSelectObg}
+      >
+      </ImageGallery>
+      {status === 'resolved' && <Button onLoadMore={loadMoreBtnHandler} />}
 
-        {selectedObg && <Modal onClose={toggleMdl} >
-          <img src={selectedObg.largeImageURL} alt={selectedObg.largeImageURL} />
-          <button
-            type='button'
-            onClick={toggleMdl}
-          >Close</button>
-        </Modal>}
+      {selectedObg && <Modal onClose={toggleMdl} >
+        <img src={selectedObg.largeImageURL} alt={selectedObg.largeImageURL} />
+        <button
+          type='button'
+          onClick={toggleMdl}
+        >Close</button>
+      </Modal>}
 
-        {status === 'pending' && 
-          <div className = {s.loader}>
+      {status === 'pending' &&
+        <div className={s.loader}>
           <Loader
-              type="Puff"
-              color="#00BFFF"
-              height={200}
-              width={200}
-            />
-            <p className = {s.p}>Loading...</p>
-          </div>
-        }
+            type="Puff"
+            color="#a2cce3"
+            height={400}
+            width={400}
+          />
+          <p className={s.p}>Loading...</p>
+        </div>
+      }
 
-      </Container>
+    </Container>
 
-    );
-  
+  );
+
 }
 
 export default App;
