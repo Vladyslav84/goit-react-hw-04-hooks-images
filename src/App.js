@@ -17,16 +17,8 @@ function App() {
   const [pageNum, setPageNum] = useState(1);
   const [selectedObg, setSelectedObg] = useState(null);
   const [status, setStatus] = useState('idle');
+  const [modalLoader, setModalLoader] = useState(true);
   const [error, setError] = useState(null);
-
-
-  // console.log(imgGallery.length);
-  //           if (imgGallery.length === 0 && status === 'resolved') {
-  //     // alert(`Sorry, we did not find such pictures ${imgName}`)
-  //     // setStatus('idle')
-  //             console.log('eeeeeeeeeeee')
-
-  //   };
 
   useEffect(() => {
     if (status === 'pending')
@@ -66,7 +58,7 @@ function App() {
       top: document.documentElement.scrollHeight,
       behavior: 'smooth',
     });
-  })
+  }, [imgGallery])
 
   function searchBarInputValueHandler(InputValue) {
     if (InputValue.trim() !== '')
@@ -89,7 +81,7 @@ function App() {
 
   function handleSelectObg(obg) {
     setSelectedObg(obg);
-    setStatus("resolved")
+
   }
 
   function toggleMdl(evt) {
@@ -107,7 +99,7 @@ function App() {
       {status === 'resolved' && <Button onLoadMore={loadMoreBtnHandler} />}
 
       {selectedObg && <Modal onClose={toggleMdl} >
-        <img src={selectedObg.largeImageURL} alt={selectedObg.largeImageURL} />
+        <img src={selectedObg.largeImageURL} alt={selectedObg.tags} />
         <button
           type='button'
           onClick={toggleMdl}
@@ -123,9 +115,7 @@ function App() {
             width={400}
           />
           <p className={s.p}>Loading...</p>
-        </div>
-      }
-
+        </div>}
     </Container>
 
   );
