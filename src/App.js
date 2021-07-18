@@ -11,14 +11,13 @@ import { fetchCountries } from './Components/Api/api'
 
 function App() {
 
-
   const [imgGallery, setImgGallery] = useState([]);
   const [imgName, setImgName] = useState('');
   const [pageNum, setPageNum] = useState(1);
   const [selectedObg, setSelectedObg] = useState(null);
   const [status, setStatus] = useState('idle');
-  const [modalLoader, setModalLoader] = useState(true);
   const [error, setError] = useState(null);
+
 
   useEffect(() => {
     if (status === 'pending')
@@ -81,13 +80,13 @@ function App() {
 
   function handleSelectObg(obg) {
     setSelectedObg(obg);
-
   }
 
   function toggleMdl(evt) {
     setSelectedObg(null);
 
   };
+
   return (
     <Container>
       <SearchBar onSubmit={searchBarInputValueHandler} />
@@ -99,7 +98,7 @@ function App() {
       {status === 'resolved' && <Button onLoadMore={loadMoreBtnHandler} />}
 
       {selectedObg && <Modal onClose={toggleMdl} >
-        <img src={selectedObg.largeImageURL} alt={selectedObg.tags} />
+        <img src={selectedObg?.largeImageURL} alt={selectedObg?.tags} />
         <button
           type='button'
           onClick={toggleMdl}

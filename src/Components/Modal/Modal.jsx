@@ -4,36 +4,31 @@ import s from './Modal.module.css';
 
 const modalRoot = document.querySelector('#modal-root');
 
-function Modal({children, onClose}) {
-    
-  useEffect(() => {
-    function handleKeyEsc (evt) {
+function Modal({ children, onClose }) {
 
-        if (evt.code === 'Escape')
-        {
-            onClose();
-            window.removeEventListener('keydown', handleKeyEsc);
+    useEffect(() => {
+        window.addEventListener('keydown', () => onClose());
+        return () => {
+            window.removeEventListener('keydown', onClose());
         }
-    };
-        window.addEventListener('keydown', handleKeyEsc);
+        // eslint-disable-next-line 
+    }, [])
 
-    }, [onClose])
-    
-        function handleOverlayClick  (evt) {
+    function handleOverlayClick(evt) {
 
         if (evt.currentTarget === evt.target)
         {
             onClose();
-            }
         }
+    }
 
-        return createPortal(
-            <div className={s.overlay} onClick={handleOverlayClick}>
-                <div className={s.modal}>
-                    {children}
-                </div>
-            </div>,
-            modalRoot,)
+    return createPortal(
+        <div className={s.overlay} onClick={handleOverlayClick}>
+            <div className={s.modal}>
+                {children}
+            </div>
+        </div>,
+        modalRoot)
 
 }
 
